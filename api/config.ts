@@ -19,7 +19,7 @@ const config = {
   rootPath,
   publicPath: path.join(rootPath, 'public'),
   corsOptions,
-  database: 'mongodb://localhost:5173',
+  database: 'mongodb://localhost/allMusic',
 };
 
 export default config;

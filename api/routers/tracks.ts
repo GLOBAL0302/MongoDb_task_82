@@ -1,16 +1,16 @@
 import express from 'express';
 import Track from '../models/Track';
-import Album from '../models/Album';
 import { ITrackMutations } from '../types';
 import mongoose from 'mongoose';
+import { imageUpload } from '../multer';
 
 const tracksRouter = express.Router();
 
-tracksRouter.get('/album', async (req, res, next) => {
+tracksRouter.get('/', async (req, res, next) => {
   try {
     let tracks;
     if (req.query.album) {
-      tracks = await Track.findById(req.query.tracks);
+      tracks = await Track.find({ album: req.query.album }).populate('album', 'title');
     } else {
       tracks = await Track.find();
     }
@@ -20,7 +20,7 @@ tracksRouter.get('/album', async (req, res, next) => {
   }
 });
 
-tracksRouter.post('/', async (req, res, next) => {
+tracksRouter.post('/', imageUpload.single('image'), async (req, res, next) => {
   try {
     const trackMutations: ITrackMutations = {
       title: req.body.title,
