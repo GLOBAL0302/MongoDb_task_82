@@ -5,28 +5,28 @@ const Schema = mongoose.Schema
 
 
 const AlbumSchema = new Schema({
-  title:{
-    type:String,
+  title: {
+    type: String,
     required: true,
   },
-  artist:{
+  artist: {
     type: Schema.Types.ObjectId,
     ref: 'Artist',
-    required:true,
-    validate:{
-      validator:async(value:Types.ObjectId)=>{
+    required: true,
+    validate: {
+      validator: async (value: Types.ObjectId) => {
         const artist = await Artist.findById(value);
         return Boolean(artist);
-},
-message:"Artist not found"
+      },
+      message: 'Artist not found'
     }
   },
-  created_at:{
-    type:String,
-    required:true
+  created_at: {
+    type: String,
+    required: true
   },
-  image:String
+  image: String
 })
 
-export const Album = mongoose.model("Album", AlbumSchema);
+export const Album = mongoose.model('Album', AlbumSchema);
 export default Album;
