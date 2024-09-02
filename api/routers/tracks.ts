@@ -3,6 +3,7 @@ import Track from '../models/Track';
 import { ITrackMutations } from '../types';
 import mongoose from 'mongoose';
 import { imageUpload } from '../multer';
+import Album from '../models/Album';
 
 const tracksRouter = express.Router();
 
@@ -11,6 +12,13 @@ tracksRouter.get('/', async (req, res, next) => {
     let tracks;
     if (req.query.album) {
       tracks = await Track.find({ album: req.query.album }).populate('album', 'title');
+    }
+    if (req.query.artist) {
+      let allAlbums = await Album.find({ artist: req.query.artist });
+      const allTracks = allAlbums.map(async (item) => {
+        return Track.find({ album: item._id });
+      });
+      return res.send(await Promise.all(allTracks));
     } else {
       tracks = await Track.find();
     }
