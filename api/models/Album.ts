@@ -1,8 +1,7 @@
-import mongoose, {Types} from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import Artist from './Artist';
 
-const Schema = mongoose.Schema
-
+const Schema = mongoose.Schema;
 
 const AlbumSchema = new Schema({
   title: {
@@ -18,15 +17,15 @@ const AlbumSchema = new Schema({
         const artist = await Artist.findById(value);
         return Boolean(artist);
       },
-      message: 'Artist not found'
-    }
+      message: 'Artist not found',
+    },
   },
   created_at: {
     type: String,
-    required: true
+    required: true,
   },
-  image: String
-})
+  image: String,
+});
 
 export const Album = mongoose.model('Album', AlbumSchema);
 export default Album;

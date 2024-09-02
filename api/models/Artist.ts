@@ -1,21 +1,18 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-
 const ArtistSchema = new Schema({
-  title:{
-    type:String,
-    required:true,
+  title: {
+    type: String,
+    required: true,
   },
-  image:{
-    type:String,
+  image: {
+    type: String,
   },
-  description:String
+  description: String,
 });
 
-const Artist = mongoose.model("Artist", ArtistSchema);
+const Artist = mongoose.model('Artist', ArtistSchema);
 
 export default Artist;
-
-
