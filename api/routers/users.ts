@@ -1,30 +1,72 @@
-import express from "express";
+import express from 'express';
 import { UserFields } from '../types';
 import User from '../models/User';
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import { randomUUID } from 'node:crypto';
 
-const usersRouter = express.Router()
+const usersRouter = express.Router();
 
-usersRouter.post("/", async(req, res, next)=>{
+usersRouter.post('/', async (req, res, next) => {
 
-  try{
-    const UserField:UserFields={
-      username:req.body.username,
-      password:req.body.password,
-    }
+  try {
+    const UserField: UserFields = {
+      username: req.body.username,
+      password: req.body.password,
+      token: randomUUID(),
+    };
 
-    const user = new User(UserField)
+    const user = new User(UserField);
     await user.save();
     return res.send(user);
-  }catch(error){
-    if(error instanceof mongoose.Error.ValidationError){
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);
     }
 
     return next(error);
   }
 
-})
+});
 
+//users/sessions/
+usersRouter.post('/sessions', async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (!user) {
+      return res.status(404).send({ error: 'User Not Found' });
+    }
+
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+
+    if (!isMatch) {
+      return res.status(404).send({ error: 'password is Not correct' });
+    }
+
+    user.token = randomUUID();
+    await user.save()
+
+    res.send(user);
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      return res.status(400).send(error);
+    }
+    return next(error);
+  }
+});
+
+// usersRouter.post('/secret', async(req, res, next)=>{
+//   const header = req.get('Authorization');
+//   console.log(header);
+//   if(!header){
+//     return res.status(401).send({error: "Unauthorized"});
+//   }
+//
+//   const [_bearer, token] = header.split(' ');
+//
+//   if(!token){
+//     return res.status(401).send({error: "Unauthorized"});
+//   }
+// })
 
 export default usersRouter;

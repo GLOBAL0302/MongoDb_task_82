@@ -47,4 +47,6 @@ tracksRouter.post('/', imageUpload.single('image'), async (req, res, next) => {
   }
 });
 
+tracksRouter.post('/', async (req, res, next) => {})
+
 export default tracksRouter;

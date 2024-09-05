@@ -20,10 +20,11 @@ export interface ITrackMutations {
 export interface UserFields{
   username: string;
   password:string
+  token:string
 }
 
 export interface ITrackHistory{
   user:string
   track:string
-  date:Date
+  created_at:Date
 }
