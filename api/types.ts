@@ -17,7 +17,7 @@ export interface ITrackMutations {
   duration: string;
 }
 
-export interface UserField{
+export interface UserFields{
   username: string;
   password:string
 }
