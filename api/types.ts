@@ -16,3 +16,14 @@ export interface ITrackMutations {
   album: string;
   duration: string;
 }
+
+export interface UserField{
+  username: string;
+  password:string
+}
+
+export interface ITrackHistory{
+  user:string
+  track:string
+  date:Date
+}
