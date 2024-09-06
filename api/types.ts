@@ -1,3 +1,5 @@
+import { Types } from 'mongoose';
+
 export interface IArtistMutation {
   title: string;
   image: string | null;
@@ -21,10 +23,4 @@ export interface UserFields{
   username: string;
   password:string
   token:string
-}
-
-export interface ITrackHistory{
-  user:string
-  track:string
-  created_at:Date
 }

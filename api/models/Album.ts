@@ -1,5 +1,6 @@
 import mongoose, { Types } from 'mongoose';
 import Artist from './Artist';
+import { IAlbumMutation } from '../types';
 
 const Schema = mongoose.Schema;
 
