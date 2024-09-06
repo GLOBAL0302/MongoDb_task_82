@@ -6,7 +6,7 @@ const Schema = mongoose.Schema
 
 const TrackHistorySchema = new Schema({
   user:{
-    type:Schema.Types.ObjectId,
+    type:Schema.Types.String,
     ref:"User",
     required:true,
     validator:async(value:Types.ObjectId)=>{

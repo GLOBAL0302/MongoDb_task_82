@@ -15,7 +15,6 @@ usersRouter.post('/', async (req, res, next) => {
       password: req.body.password,
       token: randomUUID(),
     };
-
     const user = new User(UserField);
     await user.save();
     return res.send(user);
@@ -23,10 +22,8 @@ usersRouter.post('/', async (req, res, next) => {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send(error);
     }
-
     return next(error);
   }
-
 });
 
 //users/sessions/
@@ -45,7 +42,6 @@ usersRouter.post('/sessions', async (req, res, next) => {
 
     user.token = randomUUID();
     await user.save()
-
     res.send(user);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -55,18 +51,6 @@ usersRouter.post('/sessions', async (req, res, next) => {
   }
 });
 
-// usersRouter.post('/secret', async(req, res, next)=>{
-//   const header = req.get('Authorization');
-//   console.log(header);
-//   if(!header){
-//     return res.status(401).send({error: "Unauthorized"});
-//   }
-//
-//   const [_bearer, token] = header.split(' ');
-//
-//   if(!token){
-//     return res.status(401).send({error: "Unauthorized"});
-//   }
-// })
+
 
 export default usersRouter;

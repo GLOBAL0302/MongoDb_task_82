@@ -3,8 +3,10 @@ import mongoose from 'mongoose';
 
 import { ITrackHistory } from '../types';
 import User from '../models/User';
+import TrackHistory from '../models/TrackHistory';
 
 const trackHistoryRouter = express.Router();
+
 
 trackHistoryRouter.post('/', async (req, res, next) => {
   try {
@@ -12,8 +14,6 @@ trackHistoryRouter.post('/', async (req, res, next) => {
     if (!headerValue) {
       return res.status(401).send({ error: 'Unauthorized' });
     }
-
-
     const [_bearer, token] = headerValue.split(' ');
 
     if (!token) {
@@ -27,11 +27,18 @@ trackHistoryRouter.post('/', async (req, res, next) => {
         user: user.username,
         created_at: new Date(),
       };
+
+      const trackHistory = new TrackHistory(trackHistoryMutation);
+      await trackHistory.save();
+
+      res.send(trackHistory);
     }
+
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
       return res.status(400).send({});
     }
+    next(error)
   }
 });
 
