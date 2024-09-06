@@ -3,6 +3,7 @@ import config from './config';
 import Artist from './models/Artist';
 import Album from './models/Album';
 import Track from './models/Track';
+import User from './models/User';
 
 const run = async () => {
   await mongoose.connect(config.database);
@@ -72,6 +73,13 @@ const run = async () => {
     },
   );
 
+
+  const user = new User({
+    username:"user",
+    password: "tester",
+  })
+  user.generateToken();
+  await user.save();
   await db.close();
 };
 

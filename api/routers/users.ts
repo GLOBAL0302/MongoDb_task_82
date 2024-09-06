@@ -1,22 +1,19 @@
 import express from 'express';
-import { UserFields } from '../types';
 import User from '../models/User';
 import mongoose from 'mongoose';
-import bcrypt from 'bcrypt';
-import { randomUUID } from 'node:crypto';
 
 const usersRouter = express.Router();
 
 usersRouter.post('/', async (req, res, next) => {
 
   try {
-    const UserField: UserFields = {
+    const user = new User({
       username: req.body.username,
       password: req.body.password,
-      token: randomUUID(),
-    };
-    const user = new User(UserField);
+    });
+    user.generateToken()
     await user.save();
+
     return res.send(user);
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
@@ -34,13 +31,13 @@ usersRouter.post('/sessions', async (req, res, next) => {
       return res.status(404).send({ error: 'User Not Found' });
     }
 
-    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    const isMatch = await user.checkPassword(req.body.password);
 
     if (!isMatch) {
       return res.status(404).send({ error: 'password is Not correct' });
     }
 
-    user.token = randomUUID();
+    user.generateToken();
     await user.save()
     res.send(user);
   } catch (error) {
